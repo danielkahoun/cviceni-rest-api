@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/blog', [BlogController::class, 'store']);
+Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/blog/{id}', [BlogController::class, 'show']);
+Route::delete('/blog/{id}', [BlogController::class, 'destroy'])->middleware('blogauthor');
+Route::patch('/blog/{id}', [BlogController::class, 'update'])->middleware('blogauthor');
