@@ -8,18 +8,46 @@ use Illuminate\Http\Request;
 class BlogController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/blog",
+     *     operationId="index",
+     *     tags={"Blog"},
+     *     summary="Get list of posts",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     )
+     * )
      */
     public function index()
     {
         $posts = BlogPost::orderBy('id', 'DESC')->get();
 
-        //return response()->json($posts);
         return $posts;
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/blog",
+     *     operationId="store",
+     *     tags={"Blog"},
+     *     summary="Store a new post",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="title", type="string", example="New Title"),
+     *                 @OA\Property(property="content", type="string", example="New Content"),
+     *                 @OA\Property(property="author_id", type="integer", example=1),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -33,7 +61,26 @@ class BlogController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/blog/{id}",
+     *     operationId="show",
+     *     tags={"Blog"},
+     *     summary="Show the specified post",
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="ID of the specified post",
+     *         required=true,
+     *         in="path"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found"
+     *     )
+     * )
      */
     public function show(string $id)
     {
@@ -43,7 +90,36 @@ class BlogController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *     path="/api/blog/{id}",
+     *     operationId="update",
+     *     tags={"Blog"},
+     *     summary="Update the specified post",
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="ID of the specified post",
+     *         required=true,
+     *         in="path"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="title", type="string", example="Updated Title"),
+     *                 @OA\Property(property="content", type="string", example="Updated Content")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     security={
+     *         {"Authorization": {}}
+     *     }
+     * )
      */
     public function update(Request $request, string $id)
     {
@@ -66,7 +142,26 @@ class BlogController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/blog/{id}",
+     *     operationId="destroy",
+     *     tags={"Blog"},
+     *     summary="Remove the specified post",
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="ID of the specified post",
+     *         required=true,
+     *         in="path"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(response=400, description="Bad request"),
+     *     security={
+     *         {"Authorization": {}}
+     *     }
+     * )
      */
     public function destroy(string $id)
     {
